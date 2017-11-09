@@ -5,54 +5,29 @@
     <title>THIRSTY FUCCBOI</title>
     <script src="js/bufferLoader.js" type="application/javascript"></script>
     <script src="js/game.js" type="application/javascript"></script>
+    <script src="js/graphics.js" type="application/javascript"></script>
 </head>
 <body id="body" style="background: black;">
 <script type='text/javascript'>
-    var SPRITESIZE = 16;
     var CANVAS_WIDTH = window.innerWidth - 20;
     var CANVAS_HEIGHT = window.innerHeight - 20;
-    var FPS = 25;
 
     var player = {
         x: 200,
         y: 200
     };
 
-    var KEYS = {
-        W: 87,
-        S: 83,
-        A: 65,
-        D: 68
-    };
+    var level = generateLevel();
+    var sprites = generateSprites();
 
-    var controls = {
-        mouseX: 0,
-        mouseY: 0,
-        _pressed: {},
-        isDown: function(keyCode) {
-            return this._pressed[keyCode];
-        },
-        onKeydown: function(event) {
-            this._pressed[event.keyCode] = true;
-        },
-        onKeyup: function(event) {
-            delete this._pressed[event.keyCode];
-        }
-    };
     window.addEventListener('keyup', function(event) { controls.onKeyup(event); }, false);
     window.addEventListener('keydown', function(event) { controls.onKeydown(event); }, false);
 
-    var sprites = {
-        player: new Image(),
-        ground: new Image()
-    };
-    sprites.ground.src = "assets/dirtdarker.png";
-    sprites.player.src = "assets/player.png";
 
-    var canvasElement = document.createElement("canvas");
-    canvasElement.width = CANVAS_WIDTH;
-    canvasElement.height = CANVAS_HEIGHT;
-    var canvas = canvasElement.getContext("2d");
+    var c = createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
+    var canvasElement = c.e;
+    var canvas = c.c;
+
     document.getElementById("body").appendChild(canvasElement);
 
     canvasElement.onmousemove = function(e) {
@@ -66,40 +41,14 @@
         var diff = (t-time) / 1000;
         time = t;
         update(diff);
-        draw();
+        draw(canvas, CANVAS_WIDTH, CANVAS_HEIGHT);
         window.requestAnimationFrame(step);
     }
-
     window.requestAnimationFrame(step);
 
-    function update(diff) {
-        var speed = 20; // px/sec
-        if (controls.isDown(KEYS.W)) player.y-= speed * diff;
-        if (controls.isDown(KEYS.S)) player.y+= speed * diff;
-        if (controls.isDown(KEYS.A)) player.x-= speed * diff;
-        if (controls.isDown(KEYS.D)) player.x+= speed * diff;
-    }
-
-    function draw() {
-        var width = CANVAS_WIDTH;
-        var height = CANVAS_HEIGHT;
-
-        canvas.globalCompositeOperation = "source-over";
-        canvas.clearRect(0, 0, width, height);
-        for (var tx=0;tx < CANVAS_WIDTH/SPRITESIZE;tx++) {
-            for (var ty = 0; ty < CANVAS_HEIGHT / SPRITESIZE; ty++) {
-                canvas.drawImage(sprites.ground, tx * SPRITESIZE, ty * SPRITESIZE, 16, 16);
-            }
-        }
-
-        var dx = controls.mouseX - player.x;
-        var dy = controls.mouseY - player.y;
-        var angle = Math.atan2(dy, dx);
 
 
-        var pl =  rotateImage(sprites.player, angle);
-        canvas.drawImage(pl, player.x, player.y, 16, 16);
-    }
+
     //]]>
 </script>
 </body>
