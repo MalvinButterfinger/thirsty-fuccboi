@@ -8,8 +8,8 @@ function generateSprites() {
         wall: new Image(),
         ground: new Image()
     };
-    sprites.ground.src = "assets/dirtdark.png";
-    sprites.wall.src = "assets/dirtdarker.png";
+    sprites.ground.src = "assets/dirtdarker.png";
+    sprites.wall.src = "assets/dirtdark.png";
     sprites.player.src = "assets/character.png";
     sprites.enemy.src = "assets/character2.png";
     return sprites;
